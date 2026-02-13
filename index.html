@@ -1112,7 +1112,10 @@
         </div>
     </div>
 
-    <!-- Music is generated via Web Audio API -->
+    <!-- Hidden YouTube Player -->
+    <div id="ytPlayer"
+        style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none"></div>
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <!-- Toggle Buttons -->
     <div class="toggle-btns">
@@ -1372,119 +1375,22 @@
         let gameRunning = false, gameScore = 0, heartInterval = null, isDark = false, musicPlaying = true;
         let touchStartX = 0, touchStartY = 0, swiping = false;
         let overlayDismissed = false;
-        let audioCtx = null, masterGain = null, melodyTimer = null;
+        let ytPlayer = null, ytReady = false;
 
-        // ===== BEAUTIFUL PIANO MELODY =====
-        function initAudioCtx() {
-            if (audioCtx) return;
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            masterGain = audioCtx.createGain();
-            masterGain.gain.value = 0.35;
-            masterGain.connect(audioCtx.destination);
-        }
-
-        function playNote(freq, startTime, duration, type) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = type || 'triangle';
-            osc.frequency.value = freq;
-            // Soft attack and release for piano-like sound
-            gain.gain.setValueAtTime(0, startTime);
-            gain.gain.linearRampToValueAtTime(0.25, startTime + 0.04);
-            gain.gain.exponentialRampToValueAtTime(0.08, startTime + duration * 0.6);
-            gain.gain.linearRampToValueAtTime(0.001, startTime + duration - 0.02);
-            osc.connect(gain);
-            gain.connect(masterGain);
-            osc.start(startTime);
-            osc.stop(startTime + duration);
-            // Add a softer harmonic overtone
-            const osc2 = audioCtx.createOscillator();
-            const gain2 = audioCtx.createGain();
-            osc2.type = 'sine';
-            osc2.frequency.value = freq * 2;
-            gain2.gain.setValueAtTime(0, startTime);
-            gain2.gain.linearRampToValueAtTime(0.06, startTime + 0.04);
-            gain2.gain.linearRampToValueAtTime(0.001, startTime + duration - 0.02);
-            osc2.connect(gain2);
-            gain2.connect(masterGain);
-            osc2.start(startTime);
-            osc2.stop(startTime + duration);
-        }
-
-        function playMelodyLoop() {
-            if (!musicPlaying || !audioCtx) return;
-            const t = audioCtx.currentTime + 0.1;
-            const bpm = 72;
-            const beat = 60 / bpm;
-            // "Twinkle Twinkle"-inspired emotional melody in C major
-            // Melody notes: C4 C4 G4 G4 A4 A4 G4 - F4 F4 E4 E4 D4 D4 C4
-            const melody = [
-                // Bar 1: C C G G A A G(hold)
-                { n: 262, s: 0, d: beat },
-                { n: 262, s: beat, d: beat },
-                { n: 392, s: beat * 2, d: beat },
-                { n: 392, s: beat * 3, d: beat },
-                { n: 440, s: beat * 4, d: beat },
-                { n: 440, s: beat * 5, d: beat },
-                { n: 392, s: beat * 6, d: beat * 1.8 },
-                // Bar 2: F F E E D D C(hold)
-                { n: 349, s: beat * 8, d: beat },
-                { n: 349, s: beat * 9, d: beat },
-                { n: 330, s: beat * 10, d: beat },
-                { n: 330, s: beat * 11, d: beat },
-                { n: 294, s: beat * 12, d: beat },
-                { n: 294, s: beat * 13, d: beat },
-                { n: 262, s: beat * 14, d: beat * 1.8 },
-                // Bar 3: G G F F E E D(hold)
-                { n: 392, s: beat * 16, d: beat },
-                { n: 392, s: beat * 17, d: beat },
-                { n: 349, s: beat * 18, d: beat },
-                { n: 349, s: beat * 19, d: beat },
-                { n: 330, s: beat * 20, d: beat },
-                { n: 330, s: beat * 21, d: beat },
-                { n: 294, s: beat * 22, d: beat * 1.8 },
-                // Bar 4: G G F F E E D(hold)
-                { n: 392, s: beat * 24, d: beat },
-                { n: 392, s: beat * 25, d: beat },
-                { n: 349, s: beat * 26, d: beat },
-                { n: 349, s: beat * 27, d: beat },
-                { n: 330, s: beat * 28, d: beat },
-                { n: 330, s: beat * 29, d: beat },
-                { n: 294, s: beat * 30, d: beat * 1.8 },
-            ];
-            // Soft bass chords
-            const chords = [
-                { n: 131, s: 0, d: beat * 4 },         // C2
-                { n: 165, s: 0, d: beat * 4 },         // E2
-                { n: 131, s: beat * 4, d: beat * 4 },   // C2
-                { n: 165, s: beat * 4, d: beat * 4 },   // E2
-                { n: 131, s: beat * 8, d: beat * 4 },
-                { n: 147, s: beat * 8, d: beat * 4 },   // D2
-                { n: 131, s: beat * 12, d: beat * 4 },
-                { n: 131, s: beat * 16, d: beat * 4 },
-                { n: 165, s: beat * 16, d: beat * 4 },
-                { n: 131, s: beat * 20, d: beat * 4 },
-                { n: 147, s: beat * 20, d: beat * 4 },
-                { n: 131, s: beat * 24, d: beat * 4 },
-                { n: 165, s: beat * 24, d: beat * 4 },
-                { n: 131, s: beat * 28, d: beat * 4 },
-                { n: 147, s: beat * 28, d: beat * 4 },
-            ];
-
-            melody.forEach(m => playNote(m.n, t + m.s, m.d, 'triangle'));
-            chords.forEach(c => {
-                const osc = audioCtx.createOscillator();
-                const g = audioCtx.createGain();
-                osc.type = 'sine'; osc.frequency.value = c.n;
-                g.gain.setValueAtTime(0, t + c.s);
-                g.gain.linearRampToValueAtTime(0.04, t + c.s + 0.1);
-                g.gain.linearRampToValueAtTime(0.001, t + c.s + c.d - 0.05);
-                osc.connect(g); g.connect(masterGain);
-                osc.start(t + c.s); osc.stop(t + c.s + c.d);
+        // ===== YOUTUBE PLAYER =====
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('ytPlayer', {
+                height: '1', width: '1',
+                videoId: 'XR7qvTgQ19o',
+                playerVars: { autoplay: 0, loop: 1, playlist: 'XR7qvTgQ19o', controls: 0, showinfo: 0, modestbranding: 1, rel: 0 },
+                events: {
+                    onReady: function () { ytReady = true; ytPlayer.setVolume(70); },
+                    onStateChange: function (e) {
+                        // Loop: when video ends, replay
+                        if (e.data === YT.PlayerState.ENDED) { ytPlayer.seekTo(0); ytPlayer.playVideo(); }
+                    }
+                }
             });
-
-            const loopDuration = beat * 32 * 1000;
-            melodyTimer = setTimeout(() => playMelodyLoop(), loopDuration - 200);
         }
 
         // ===== DISMISS OVERLAY & AUTO-PLAY MUSIC =====
@@ -1494,28 +1400,21 @@
             const overlay = document.getElementById('startOverlay');
             overlay.style.opacity = '0';
             setTimeout(() => overlay.style.display = 'none', 800);
-            // Start music
-            initAudioCtx();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            // Start YouTube music
+            if (ytReady && ytPlayer) { ytPlayer.playVideo(); }
+            else { setTimeout(() => { if (ytReady && ytPlayer) ytPlayer.playVideo(); }, 1500); }
             musicPlaying = true;
-            playMelodyLoop();
             document.getElementById('musicBtn').textContent = '🔊';
             autoStartSplash();
         }
 
         // ===== MUSIC TOGGLE =====
         function toggleMusic() {
+            if (!ytReady || !ytPlayer) return;
             musicPlaying = !musicPlaying;
             document.getElementById('musicBtn').textContent = musicPlaying ? '🔊' : '🔇';
-            if (musicPlaying) {
-                initAudioCtx();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                playMelodyLoop();
-            } else {
-                if (melodyTimer) clearTimeout(melodyTimer);
-                if (masterGain) masterGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-                setTimeout(() => { if (masterGain && !musicPlaying) masterGain.gain.value = 0.35; }, 500);
-            }
+            if (musicPlaying) { ytPlayer.playVideo(); }
+            else { ytPlayer.pauseVideo(); }
         }
 
         // ===== DARK MODE =====
