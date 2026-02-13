@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="A heartfelt apology for Shristi - the best sister ever!">
     <title>For Shristi 💖 - I'm Sorry!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -19,7 +22,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            font-family: 'Quicksand', 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #ff69b4, #ff85c1, #ffa0d4, #ffe0f0);
             touch-action: manipulation;
             transition: background 0.5s
@@ -102,7 +105,7 @@
             font-weight: bold;
             color: #fff;
             cursor: pointer;
-            font-family: 'Comic Sans MS', cursive;
+            font-family: 'Quicksand', sans-serif;
             margin-top: 12px;
             min-height: 44px;
             min-width: 44px;
@@ -566,7 +569,7 @@
             cursor: pointer;
             z-index: 5;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            font-family: 'Comic Sans MS', cursive
+            font-family: 'Quicksand', sans-serif
         }
 
         .wheel-center:active {
@@ -1094,9 +1097,29 @@
 
 <body>
 
+    <!-- Tap to Start Overlay (required for auto-play music) -->
+    <div id="startOverlay"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:linear-gradient(135deg,#ff69b4,#ff85c1,#ffa0d4,#ffe0f0);display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:opacity 0.8s"
+        onclick="dismissOverlay()">
+        <div style="font-size:80px;animation:heartbeat 1.5s ease-in-out infinite">💖</div>
+        <p style="font-size:24px;color:#fff;font-weight:700;margin:15px 0;font-family:'Quicksand',sans-serif">For
+            Shristi</p>
+        <p style="font-size:16px;color:rgba(255,255,255,0.9);font-family:'Quicksand',sans-serif">Tap anywhere to start
+            🎵</p>
+        <div
+            style="margin-top:20px;width:60px;height:60px;border:3px solid rgba(255,255,255,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:pulse 2s infinite">
+            <span style="font-size:28px;margin-left:4px">▶</span>
+        </div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/audio/2024/11/29/audio_e1cb1e2a3e.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Toggle Buttons -->
     <div class="toggle-btns">
-        <button class="toggle-btn" id="musicBtn" onclick="toggleMusic()" title="Music">🔇</button>
+        <button class="toggle-btn" id="musicBtn" onclick="toggleMusic()" title="Music">�</button>
         <button class="toggle-btn" id="darkBtn" onclick="toggleDarkMode()" title="Dark Mode">🌙</button>
     </div>
 
@@ -1349,37 +1372,34 @@
     <script>
         // ===== GLOBALS =====
         let currentPage = 1, totalPages = 15, noButtonClicks = 0, isSpinning = false, wheelRotation = 0;
-        let gameRunning = false, gameScore = 0, heartInterval = null, isDark = false, musicPlaying = false;
+        let gameRunning = false, gameScore = 0, heartInterval = null, isDark = false, musicPlaying = true;
         let touchStartX = 0, touchStartY = 0, swiping = false;
+        let overlayDismissed = false;
 
-        // ===== AUDIO CONTEXT for background music =====
-        let audioCtx = null, musicSource = null, musicGain = null;
-        function initAudio() {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            musicGain = audioCtx.createGain(); musicGain.gain.value = 0.3; musicGain.connect(audioCtx.destination);
+        // ===== DISMISS OVERLAY & AUTO-PLAY MUSIC =====
+        function dismissOverlay() {
+            if (overlayDismissed) return;
+            overlayDismissed = true;
+            const overlay = document.getElementById('startOverlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 800);
+            // Start music
+            const audio = document.getElementById('bgMusic');
+            audio.volume = 0.5;
+            audio.play().catch(() => { });
+            musicPlaying = true;
+            document.getElementById('musicBtn').textContent = '🔊';
+            // Start the splash auto-transition
+            autoStartSplash();
         }
-        function playMelody() {
-            if (!audioCtx) initAudio();
-            const notes = [392, 440, 494, 523, 494, 440, 392, 330, 294, 330, 392, 440, 494, 523, 587, 523];
-            const dur = 0.45; let t = audioCtx.currentTime;
-            function playLoop() {
-                notes.forEach((f, i) => {
-                    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-                    o.type = 'sine'; o.frequency.value = f;
-                    g.gain.setValueAtTime(0, t + i * dur); g.gain.linearRampToValueAtTime(0.15, t + i * dur + 0.05);
-                    g.gain.linearRampToValueAtTime(0, t + i * dur + dur - 0.05);
-                    o.connect(g); g.connect(musicGain); o.start(t + i * dur); o.stop(t + i * dur + dur);
-                });
-                t += notes.length * dur;
-                if (musicPlaying) setTimeout(playLoop, notes.length * dur * 1000 - 100);
-            }
-            playLoop();
-        }
+
+        // ===== MUSIC TOGGLE =====
         function toggleMusic() {
+            const audio = document.getElementById('bgMusic');
             musicPlaying = !musicPlaying;
             document.getElementById('musicBtn').textContent = musicPlaying ? '🔊' : '🔇';
-            if (musicPlaying) { if (!audioCtx) initAudio(); playMelody(); }
-            else if (audioCtx) { musicGain.gain.value = 0; setTimeout(() => { if (!musicPlaying) return; musicGain.gain.value = 0.3; }, 100); }
+            if (musicPlaying) { audio.play().catch(() => { }); }
+            else { audio.pause(); }
         }
 
         // ===== DARK MODE =====
@@ -1390,7 +1410,8 @@
 
         // ===== INIT =====
         window.addEventListener('load', () => {
-            initNavDots(); initFloatingHearts(); initNoButton(); initSwipe(); autoStartSplash();
+            initNavDots(); initFloatingHearts(); initNoButton(); initSwipe();
+            // Don't auto-start splash until overlay is dismissed
             // Hide swipe hint after 8s
             setTimeout(() => { const h = document.getElementById('swipeHint'); if (h) h.style.display = 'none'; }, 8000);
         });
