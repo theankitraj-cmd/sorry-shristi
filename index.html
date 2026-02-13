@@ -1092,6 +1092,483 @@
                 font-size: 10px
             }
         }
+
+        /* ===== SPARKLE TRAIL ===== */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            font-size: 16px;
+            animation: sparkle-fade 0.8s ease-out forwards;
+        }
+
+        @keyframes sparkle-fade {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0) translateY(-30px) rotate(180deg);
+            }
+        }
+
+        /* ===== STICKER BURST ===== */
+        .sticker-burst {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9997;
+            font-size: 28px;
+            animation: sticker-pop 1s ease-out forwards;
+        }
+
+        @keyframes sticker-pop {
+            0% {
+                opacity: 1;
+                transform: scale(0.3) translateY(0);
+            }
+
+            30% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.5) translateY(-80px);
+            }
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-container {
+            width: 80%;
+            max-width: 250px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff69b4, #ff85c1, #fff);
+            border-radius: 10px;
+            animation: load-progress 2.8s ease-in-out forwards;
+        }
+
+        @keyframes load-progress {
+            0% {
+                width: 0%;
+            }
+
+            60% {
+                width: 70%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: rgba(255, 105, 180, 0.8);
+            margin-top: 8px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        /* ===== PAGE TRANSITIONS ===== */
+        .page.slide-left {
+            animation: slideLeft 0.6s ease-in-out forwards;
+        }
+
+        .page.slide-right {
+            animation: slideRight 0.6s ease-in-out forwards;
+        }
+
+        .page.flip-in {
+            animation: flipIn 0.7s ease-in-out forwards;
+        }
+
+        .page.zoom-in {
+            animation: zoomIn 0.6s ease-in-out forwards;
+        }
+
+        .page.spiral-in {
+            animation: spiralIn 0.7s ease-in-out forwards;
+        }
+
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes flipIn {
+            from {
+                opacity: 0;
+                transform: rotateY(90deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: rotateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes spiralIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3) rotate(180deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        /* ===== SCRATCH CARD ===== */
+        .scratch-container {
+            position: relative;
+            width: 260px;
+            height: 160px;
+            margin: 15px auto;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px dashed #ff69b4;
+        }
+
+        .scratch-msg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ff69b4;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #fff0f5, #ffe0f0);
+        }
+
+        .scratch-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        /* ===== BALLOONS ===== */
+        .balloon-area {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .balloon {
+            position: absolute;
+            font-size: 50px;
+            cursor: pointer;
+            animation: float-balloon 4s ease-in-out infinite;
+            transition: transform 0.2s;
+        }
+
+        .balloon:active {
+            transform: scale(1.4);
+        }
+
+        .balloon.popped {
+            animation: pop-balloon 0.4s ease-out forwards !important;
+        }
+
+        @keyframes float-balloon {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        @keyframes pop-balloon {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.8);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .balloon-msg {
+            position: absolute;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff69b4;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            animation: msg-appear 0.5s ease-out;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        @keyframes msg-appear {
+            from {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 2px solid #ffa0d4;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            font-family: 'Quicksand', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: 600;
+            color: #d63384;
+        }
+
+        .quiz-option:hover {
+            background: #ffe0f0;
+            transform: scale(1.02);
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .quiz-option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .quiz-score {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ff69b4;
+            margin: 10px 0;
+        }
+
+        /* ===== EMOJI PUZZLE ===== */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            max-width: 280px;
+            margin: 12px auto;
+        }
+
+        .puzzle-card {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff69b4, #ffa0d4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(255, 105, 180, 0.3);
+        }
+
+        .puzzle-card.flipped {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .puzzle-card.matched {
+            background: #d4edda;
+            transform: scale(0.9);
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        /* ===== SHARE BUTTON ===== */
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== COUNTDOWN ===== */
+        .countdown {
+            font-size: 14px;
+            color: #ff69b4;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .countdown span {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* ===== EASTER EGG ===== */
+        .easter-surprise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 10000;
+            animation: fadeIn 0.5s ease-out;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .puzzle-card {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+
+            .puzzle-grid {
+                gap: 6px;
+            }
+
+            .scratch-container {
+                width: 220px;
+                height: 140px;
+            }
+
+            .balloon {
+                font-size: 40px;
+            }
+
+            .balloon-area {
+                height: 250px;
+            }
+
+            .quiz-option {
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .puzzle-card {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .scratch-container {
+                width: 200px;
+                height: 120px;
+            }
+
+            .balloon-area {
+                height: 220px;
+            }
+        }
     </style>
 </head>
 
@@ -1133,9 +1610,13 @@
     <div class="page active" id="page1">
         <div class="content-box">
             <span class="big-emoji heartbeat" style="font-size:100px">❤️</span>
-            <h1 style="font-size:42px;color:#ff69b4;margin:10px 0">For Shristi</h1>
+            <h1 id="splashTitle" style="font-size:42px;color:#ff69b4;margin:10px 0;cursor:pointer"
+                onclick="easterEggTap()">For Shristi</h1>
             <p style="font-size:22px;color:#888">My Pyari Behna 🌸</p>
-            <div class="loading-dots" style="margin-top:20px"><span></span><span></span><span></span></div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <p class="progress-text">Loading apology...</p>
         </div>
     </div>
 
@@ -1334,8 +1815,8 @@
                     FIRE CONFETTI CANNON! 🎊
                 </button>
             </div>
-            <button class="btn" onclick="goToPage(14)" style="background:linear-gradient(135deg,#ffa0d4,#ff69b4)">Final
-                Page! 💌</button>
+            <button class="btn" onclick="goToPage(14)" style="background:linear-gradient(135deg,#ffa0d4,#ff69b4)">Next!
+                💌</button>
         </div>
     </div>
 
@@ -1354,24 +1835,72 @@
                     Together</span></div>
             <div class="coupon"><span class="coupon-emoji">🎵</span><span class="coupon-text">I'll Listen To Your Songs
                     All Day</span></div>
-            <button class="btn" onclick="goToPage(15)">Thank You Page! 🫂</button>
+            <button class="btn" onclick="goToPage(15)">More Surprises! 🎁</button>
         </div>
     </div>
 
-    <!-- PAGE 15: FINAL THANK YOU -->
+    <!-- PAGE 15: SCRATCH CARD -->
     <div class="page" id="page15">
+        <div class="content-box">
+            <h2 class="title">Scratch & Reveal! 🎫</h2>
+            <p class="subtitle">Scratch the card to see your surprise message!</p>
+            <div class="scratch-container">
+                <div class="scratch-msg" id="scratchMsg">You're the best sister in the world! 💖🌟</div>
+                <canvas class="scratch-canvas" id="scratchCanvas"></canvas>
+            </div>
+            <p style="font-size:13px;color:#999;margin-top:8px">👆 Use your finger to scratch</p>
+            <button class="btn" onclick="goToPage(16)">Pop Some Balloons! 🎈</button>
+        </div>
+    </div>
+
+    <!-- PAGE 16: POP THE BALLOONS -->
+    <div class="page" id="page16">
+        <div class="content-box">
+            <h2 class="title">Pop the Balloons! 🎈</h2>
+            <p class="subtitle">Tap each balloon for a message!</p>
+            <div class="balloon-area" id="balloonArea"></div>
+            <p id="balloonCounter" style="font-size:14px;color:#ff69b4;font-weight:700"></p>
+            <button class="btn" onclick="goToPage(17)">Quiz Time! 🧠</button>
+        </div>
+    </div>
+
+    <!-- PAGE 17: QUIZ ABOUT SHRISTI -->
+    <div class="page" id="page17">
+        <div class="content-box scrollable">
+            <h2 class="title">How Well Do I Know You? 🧠</h2>
+            <div id="quizArea"></div>
+            <div id="quizResult" style="display:none"></div>
+            <button class="btn" onclick="goToPage(18)" id="quizNextBtn" style="display:none">Puzzle Time! 🧩</button>
+        </div>
+    </div>
+
+    <!-- PAGE 18: EMOJI MEMORY PUZZLE -->
+    <div class="page" id="page18">
+        <div class="content-box">
+            <h2 class="title">Emoji Match! 🧩</h2>
+            <p class="subtitle">Find all matching pairs!</p>
+            <div class="puzzle-grid" id="puzzleGrid"></div>
+            <p id="puzzleStatus" style="font-size:15px;color:#ff69b4;font-weight:700;margin-top:10px"></p>
+            <button class="btn" onclick="goToPage(19)">Final Page! 🫂</button>
+        </div>
+    </div>
+
+    <!-- PAGE 19: FINAL THANK YOU -->
+    <div class="page" id="page19">
         <div class="content-box">
             <span style="font-size:75px">🫂</span>
             <h2 class="title" style="font-size:28px" id="finalTitle"></h2>
             <div class="final-msg" id="finalMsg"></div>
             <div style="font-size:50px;margin:10px 0">💕 ✨ 🎉</div>
-            <button class="btn pulse" onclick="location.reload()">Start Again! 🔄</button>
+            <div class="countdown" id="countdown"></div>
+            <button class="share-btn" onclick="shareWebsite()">📤 Share with Shristi</button>
+            <button class="btn pulse" onclick="location.reload()" style="margin-top:8px">Start Again! 🔄</button>
         </div>
     </div>
 
     <script>
         // ===== GLOBALS =====
-        let currentPage = 1, totalPages = 15, noButtonClicks = 0, isSpinning = false, wheelRotation = 0;
+        let currentPage = 1, totalPages = 19, noButtonClicks = 0, isSpinning = false, wheelRotation = 0;
         let gameRunning = false, gameScore = 0, heartInterval = null, isDark = false, musicPlaying = true;
         let touchStartX = 0, touchStartY = 0, swiping = false;
         let overlayDismissed = false;
@@ -1439,7 +1968,7 @@
 
         // ===== FLOATING HEARTS =====
         function initFloatingHearts() {
-            const h = ['💕', '💖', '💗', '💝', '💕', '💖', '💗'], p = [5, 15, 30, 45, 60, 75, 90], dl = [0, 1, 2, 3, 4, 5, 2.5];
+            const h = ['💕', '🌸', '💖', '🌺', '💗', '🌷', '💝', '🌸', '💕', '💖'], p = [5, 12, 25, 38, 45, 55, 65, 75, 85, 92], dl = [0, 0.8, 1.6, 2.4, 3.2, 4, 2, 1.2, 3.6, 0.4];
             const c = document.getElementById('floatingHearts');
             h.forEach((hrt, i) => { const e = document.createElement('div'); e.className = 'floating-heart'; e.textContent = hrt; e.style.left = p[i] + '%'; e.style.animationDelay = dl[i] + 's'; c.appendChild(e); });
         }
@@ -1461,6 +1990,7 @@
         function autoStartSplash() { setTimeout(() => goToPage(2), 3000); }
 
         // ===== PAGE NAVIGATION =====
+        const pageTransitions = ['', '', 'slide-left', 'zoom-in', 'flip-in', 'spiral-in', 'slide-left', 'zoom-in', 'flip-in', 'slide-left', 'spiral-in', 'zoom-in', 'flip-in', 'slide-left', 'zoom-in', 'flip-in', 'slide-left', 'spiral-in', 'zoom-in', 'flip-in'];
         function goToPage(page) {
             if (page < 1 || page > totalPages || page === currentPage) return;
             const curr = document.getElementById('page' + currentPage);
@@ -1471,10 +2001,16 @@
                 curr.classList.remove('exit');
                 const next = document.getElementById('page' + currentPage);
                 const dn = document.getElementById('dot' + currentPage);
+                // Apply unique transition
+                const trans = pageTransitions[page] || '';
+                if (trans) { next.classList.add(trans); setTimeout(() => next.classList.remove(trans), 700); }
                 next.classList.add('active'); if (dn) dn.classList.add('active');
-                // Trigger typing on specific pages
                 if (page === 2) startTypingPage2();
-                if (page === 15) startTypingPage15();
+                if (page === 15) initScratchCard();
+                if (page === 16) initBalloons();
+                if (page === 17) initQuiz();
+                if (page === 18) initPuzzle();
+                if (page === 19) { startTypingPage15(); startCountdown(); }
             }, 300);
         }
 
@@ -1594,6 +2130,184 @@
 
         // ===== CONFETTI CANNON =====
         function fireConfettiCannon() { for (let i = 0; i < 8; i++)setTimeout(() => createConfetti(), i * 60); }
+
+        // ===== SPARKLE TRAIL =====
+        let sparkleThrottle = 0;
+        function initSparkleTrail() {
+            const sparkles = ['✨', '⭐', '💫', '🌟', '💖'];
+            function addSparkle(x, y) {
+                if (Date.now() - sparkleThrottle < 80) return;
+                sparkleThrottle = Date.now();
+                const s = document.createElement('div');
+                s.className = 'sparkle';
+                s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+                s.style.left = (x - 8 + Math.random() * 16) + 'px';
+                s.style.top = (y - 8 + Math.random() * 16) + 'px';
+                document.body.appendChild(s);
+                setTimeout(() => s.remove(), 800);
+            }
+            document.addEventListener('mousemove', e => addSparkle(e.clientX, e.clientY));
+            document.addEventListener('touchmove', e => addSparkle(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+        }
+
+        // ===== STICKER REACTIONS =====
+        let stickerThrottle = 0;
+        function initStickerReactions() {
+            const stickers = ['💖', '🌸', '✨', '🎉', '💕', '🦋', '🌺', '🎀', '💗', '⭐'];
+            document.addEventListener('click', e => {
+                if (e.target.closest('button') || e.target.closest('.toggle-btn') || e.target.closest('#startOverlay')) return;
+                if (Date.now() - stickerThrottle < 400) return;
+                stickerThrottle = Date.now();
+                for (let i = 0; i < 3; i++) {
+                    const s = document.createElement('div');
+                    s.className = 'sticker-burst';
+                    s.textContent = stickers[Math.floor(Math.random() * stickers.length)];
+                    s.style.left = (e.clientX - 14 + (Math.random() - 0.5) * 60) + 'px';
+                    s.style.top = (e.clientY - 14 + (Math.random() - 0.5) * 40) + 'px';
+                    document.body.appendChild(s);
+                    setTimeout(() => s.remove(), 1000);
+                }
+            });
+        }
+
+        // ===== SCRATCH CARD =====
+        let scratchInited = false;
+        function initScratchCard() {
+            if (scratchInited) return; scratchInited = true;
+            const msgs = ["You're the best sister! 💖🌟", "Best bhai promise! 🫂", "You deserve happiness! 🎉💕", "Sorry from my heart! ❤️", "You're my favorite! 🌸✨"];
+            document.getElementById('scratchMsg').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+            const canvas = document.getElementById('scratchCanvas'), container = canvas.parentElement;
+            canvas.width = container.offsetWidth; canvas.height = container.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffa0d4'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Quicksand'; ctx.textAlign = 'center';
+            ctx.fillText('✨ Scratch Me! ✨', canvas.width / 2, canvas.height / 2 + 5);
+            ctx.globalCompositeOperation = 'destination-out';
+            let drawing = false;
+            function scratch(x, y) { const r = canvas.getBoundingClientRect(); ctx.beginPath(); ctx.arc(x - r.left, y - r.top, 22, 0, Math.PI * 2); ctx.fill(); }
+            canvas.addEventListener('mousedown', () => drawing = true);
+            canvas.addEventListener('mouseup', () => drawing = false);
+            canvas.addEventListener('mousemove', e => { if (drawing) scratch(e.clientX, e.clientY); });
+            canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; }, { passive: false });
+            canvas.addEventListener('touchend', () => drawing = false);
+            canvas.addEventListener('touchmove', e => { e.preventDefault(); scratch(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+        }
+
+        // ===== POP THE BALLOONS =====
+        let balloonsInited = false, balloonsPopped = 0;
+        function initBalloons() {
+            if (balloonsInited) return; balloonsInited = true;
+            const area = document.getElementById('balloonArea');
+            const messages = ["I'm sorry! 💕", "You're amazing! ✨", "Forgive me? 🥺", "Love you behna! 💖", "Best sister! 🌸", "My fault! 🙏", "Never again! 🤞", "You're the best! 🎀"];
+            balloonsPopped = 0; document.getElementById('balloonCounter').textContent = '0 / 8 popped!';
+            for (let i = 0; i < 8; i++) {
+                const el = document.createElement('div'); el.className = 'balloon'; el.textContent = '🎈';
+                el.style.left = (8 + (i % 4) * 23) + '%'; el.style.top = (i < 4 ? 10 : 52) + '%';
+                el.style.animationDelay = (i * 0.3) + 's';
+                el.onclick = function () {
+                    if (this.classList.contains('popped')) return; this.classList.add('popped'); balloonsPopped++;
+                    document.getElementById('balloonCounter').textContent = balloonsPopped + ' / 8 popped!';
+                    const msg = document.createElement('div'); msg.className = 'balloon-msg'; msg.textContent = messages[i];
+                    msg.style.left = this.style.left; msg.style.top = this.style.top; area.appendChild(msg);
+                    setTimeout(() => msg.remove(), 2000);
+                    if (balloonsPopped === 8) { createConfetti(); document.getElementById('balloonCounter').textContent = '🎉 All popped!'; }
+                };
+                area.appendChild(el);
+            }
+        }
+
+        // ===== QUIZ =====
+        let quizInited = false, quizCurrent = 0, quizScore = 0;
+        const quizQuestions = [
+            { q: "Best quality of Shristi?", opts: ["Her smile 😊", "Her kindness 💕", "Her strength 💪", "ALL above! 🌟"], ans: 3 },
+            { q: "What does Shristi deserve?", opts: ["Happiness 🎉", "Chocolates 🍫", "The world 🌍", "Everything! 💖"], ans: 3 },
+            { q: "How much do I love Shristi?", opts: ["A lot! 💗", "More than pizza 🍕", "To the moon 🌙", "Infinity! 🚀"], ans: 3 },
+            { q: "Who's the best behna?", opts: ["Shristi! 👑", "Definitely Shristi! 💕", "Obviously Shristi! ✨", "Only Shristi! 🌸"], ans: Math.floor(Math.random() * 4) },
+            { q: "Will I mess up again?", opts: ["Never! 🙅", "I'll try best! 💪", "Promise to be better! 🤞", "Not if I can help it! 🛡️"], ans: 2 }
+        ];
+        function initQuiz() { if (quizInited) return; quizInited = true; quizCurrent = 0; quizScore = 0; showQuizQ(); }
+        function showQuizQ() {
+            if (quizCurrent >= quizQuestions.length) {
+                document.getElementById('quizArea').innerHTML = '';
+                document.getElementById('quizResult').style.display = 'block';
+                document.getElementById('quizResult').innerHTML = '<div class="quiz-score">' + quizScore + '/5 correct!</div><p style="color:#ff69b4;font-weight:600">' + (quizScore >= 4 ? '🎉 Perfect!' : quizScore >= 2 ? '💕 Not bad!' : '🥺 Try again!') + '</p>';
+                document.getElementById('quizNextBtn').style.display = 'block';
+                if (quizScore >= 3) createConfetti(); return;
+            }
+            const q = quizQuestions[quizCurrent], area = document.getElementById('quizArea');
+            area.innerHTML = '<p style="font-size:16px;font-weight:700;color:#d63384;margin-bottom:10px">Q' + (quizCurrent + 1) + ': ' + q.q + '</p>';
+            q.opts.forEach((opt, i) => {
+                const btn = document.createElement('button'); btn.className = 'quiz-option'; btn.textContent = opt;
+                btn.onclick = function () {
+                    area.querySelectorAll('.quiz-option').forEach((b, j) => { b.disabled = true; if (j === q.ans) b.classList.add('correct'); else if (j === i && i !== q.ans) b.classList.add('wrong'); });
+                    if (i === q.ans) quizScore++; quizCurrent++; setTimeout(() => showQuizQ(), 1200);
+                };
+                area.appendChild(btn);
+            });
+        }
+
+        // ===== EMOJI MEMORY PUZZLE =====
+        let puzzleInited = false;
+        function initPuzzle() {
+            if (puzzleInited) return; puzzleInited = true;
+            const emojis = ['💖', '🌸', '✨', '🎀', '🦋', '🌺', '💕', '⭐'];
+            const deck = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('puzzleGrid'); grid.innerHTML = '';
+            let flipped = [], matched = 0, locked = false;
+            document.getElementById('puzzleStatus').textContent = 'Pairs: 0 / 8';
+            deck.forEach(emoji => {
+                const card = document.createElement('div'); card.className = 'puzzle-card'; card.textContent = '❓'; card.dataset.emoji = emoji;
+                card.onclick = function () {
+                    if (locked || this.classList.contains('flipped') || this.classList.contains('matched')) return;
+                    this.classList.add('flipped'); this.textContent = this.dataset.emoji; flipped.push(this);
+                    if (flipped.length === 2) {
+                        locked = true;
+                        if (flipped[0].dataset.emoji === flipped[1].dataset.emoji) {
+                            flipped.forEach(c => c.classList.add('matched')); matched++;
+                            document.getElementById('puzzleStatus').textContent = 'Pairs: ' + matched + ' / 8';
+                            flipped = []; locked = false;
+                            if (matched === 8) { createConfetti(); document.getElementById('puzzleStatus').textContent = '🎉 All matched!'; }
+                        } else { setTimeout(() => { flipped.forEach(c => { c.classList.remove('flipped'); c.textContent = '❓'; }); flipped = []; locked = false; }, 800); }
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== EASTER EGG =====
+        let easterTaps = 0;
+        function easterEggTap() {
+            easterTaps++;
+            if (easterTaps >= 5) {
+                easterTaps = 0;
+                const ov = document.createElement('div'); ov.className = 'easter-surprise';
+                ov.innerHTML = '<div style="font-size:80px;animation:heartbeat 1s infinite">🎁</div><p style="color:#fff;font-size:22px;font-weight:700;margin:15px;font-family:Quicksand,sans-serif">Secret Message!</p><p style="color:#ffa0d4;font-size:16px;padding:0 20px;text-align:center;font-family:Quicksand,sans-serif">Shristi, you found the easter egg! 🥚✨<br>You ARE the best sister ever!<br>Love you more than words! 💖🌸</p><p style="color:#888;margin-top:20px;font-size:13px">Tap to close</p>';
+                ov.onclick = () => { ov.style.opacity = '0'; setTimeout(() => ov.remove(), 500); };
+                document.body.appendChild(ov);
+                for (let i = 0; i < 5; i++) setTimeout(() => createConfetti(), i * 200);
+            }
+        }
+
+        // ===== SHARE =====
+        function shareWebsite() {
+            const url = 'https://theankitraj-cmd.github.io/sorry-shristi/';
+            if (navigator.share) { navigator.share({ title: 'For Shristi 💖', text: '💖 Made this for you!', url }).catch(() => { }); }
+            else { navigator.clipboard.writeText(url).then(() => alert('Link copied! 📋💖')).catch(() => alert('Share: ' + url)); }
+        }
+
+        // ===== COUNTDOWN =====
+        function startCountdown() {
+            const start = new Date('2026-02-13T21:00:00+05:30').getTime();
+            function upd() {
+                const diff = Date.now() - start, d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000);
+                const el = document.getElementById('countdown');
+                if (el) el.innerHTML = "Sorry for <span>" + d + "d " + h + "h " + m + "m</span> and counting... 💕";
+            }
+            upd(); setInterval(upd, 60000);
+        }
+
+        // ===== INIT GLOBAL EFFECTS =====
+        window.addEventListener('load', () => { initSparkleTrail(); initStickerReactions(); });
     </script>
 </body>
 
